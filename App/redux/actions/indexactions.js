@@ -1,5 +1,7 @@
 class ACTION_TYPE {
   static UPDATE_SERVER_ID = "UPDATE_SERVER_ID";
+  static UPDATE_TOKEN= "UPDATE_TOKEN";
+  static UPDATE_FIRST = "UPDATE_FIRST_OPEN";
 }
 
 export default ACTION_TYPE;

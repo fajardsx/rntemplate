@@ -7,6 +7,9 @@ class colors {
   //PRIMARY TXT COLOR
   static COLOR_TEXT_1 = "#000000";
   static COLOR_TEXT_2 = "#FFFFFF";
+  //PRIMAEY BUTTON COLOR
+  static COLOR_BUTTON_1 = "#42B2FE";
+  static COLOR_BUTTON_LABEL_1 = "#FFFFFF";
   
   //
   static LOADING_COLOR = "gray"

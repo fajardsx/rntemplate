@@ -10,6 +10,7 @@ import {
 import NavigationService from "./NavigationServices";
 import Root from "./containers/root";
 import Init from "./screen/initscreen";
+import OnBoardingScreen from "./screen/onBoarding/OnBoardingScreen";
 
 const MainStackNavigator = createAppContainer(createStackNavigator(
     {
@@ -39,6 +40,9 @@ const AppStack = createAppContainer(createSwitchNavigator(
   {
     InitScreen:{
       screen:Init,
+    },
+    OnboardingScreen:{
+      screen:OnBoardingScreen,
     },
     AppsScreen: {
       screen: RootScreen,
