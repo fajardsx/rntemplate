@@ -15,15 +15,26 @@ class ProfilScreen extends Component {
   }
   componentDidMount() {
     //Constant.TEMP_TOKEN = this.props.token;
-    this.didFocusDSubscription = this.props.navigation.addListener("didFocus", (payload) => {
-      this.checkLogin(true);
-      console.log("profilscreen.js => didFocus ");
-    });
+    this.list = [
+      (this.didFocusDSubscription = this.props.navigation.addListener("didFocus", (payload) => {
+        console.log("profilscreen.js => didFocus ");
+        this.checkLogin(true);
+      })),
+    ];
+
     this.checkLogin();
   }
+  componentWillUnmount() {
+    this.list.forEach((item) => {
+      item.remove();
+    });
+  }
+
   checkLogin(force = false) {
-    if (Constant.TEMP_TOKEN && Constant.TEMP_TOKEN.length == 0) {
-      NavigationServices.navigate(ROUTE_NAME.LOGIN_SCREEN);
+    if (force) {
+      if (this.props.token == null || (this.props.token != null && this.props.token.length == 0)) {
+        NavigationServices.navigate(ROUTE_NAME.LOGIN_SCREEN);
+      }
     }
   }
   render() {

@@ -6,12 +6,12 @@ import Constant from "../../config/Constant";
 import { connect } from "react-redux";
 import ACTION_TYPE from "../../redux/actions/indexactions";
 import Forminput from "../../components/Forminput";
-import { addSpace, convertWidth } from "./../../config/global";
-import { Buttons } from "./../../components/button";
-import colors from "./../../styles/colors";
+import { addSpace, convertWidth } from "../../config/global";
+import { Buttons } from "../../components/button";
+import colors from "../../styles/colors";
 import { ROUTE_NAME } from "./../../config/Keys";
 
-class LoginScreen extends Component {
+class RegisterScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -31,8 +31,15 @@ class LoginScreen extends Component {
         style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
           <View style={AppStyle.dummyScreenTitle}>
-            <Text>{`Login`}</Text>
+            <Text>{`Register`}</Text>
           </View>
+          <Forminput
+            placeholder={"Full Name"}
+            stylecontainer={[
+              AppStyle.loginContainerdefault,
+              { width: convertWidth(80), alignSelf: "center" },
+            ]}
+          />
           <Forminput
             placeholder={"Email"}
             stylecontainer={[
@@ -40,7 +47,20 @@ class LoginScreen extends Component {
               { width: convertWidth(80), alignSelf: "center" },
             ]}
           />
-          {addSpace(5)}
+          <Forminput
+            placeholder={"Password"}
+            stylecontainer={[
+              AppStyle.loginContainerdefault,
+              { width: convertWidth(80), alignSelf: "center" },
+            ]}
+          />
+          <Forminput
+            placeholder={"Confirm Password"}
+            stylecontainer={[
+              AppStyle.loginContainerdefault,
+              { width: convertWidth(80), alignSelf: "center" },
+            ]}
+          />
           <Forminput
             placeholder={"Password"}
             stylecontainer={[
@@ -50,36 +70,16 @@ class LoginScreen extends Component {
             secureTextEntry
           />
           {addSpace(5)}
-          <Buttons
-            label={"Sign in"}
-            style={{ width: convertWidth(80), alignSelf: "center", borderRadius: 10 }}
-          />
-          <Buttons
-            label={"Forgot Password?"}
-            stylelabel={{
-              color: colors.COLOR_TEXT_3,
-            }}
-            style={{
-              backgroundColor: "transparent",
-              width: convertWidth(80),
-              alignSelf: "center",
-              borderRadius: 10,
-            }}
-          />
+
           <Buttons
             label={"Sign Up"}
-            stylelabel={{
-              color: colors.COLOR_TEXT_1,
-            }}
             style={{
-              backgroundColor: "transparent",
               width: convertWidth(80),
               alignSelf: "center",
               borderRadius: 10,
             }}
             onPress={this.onSignUp.bind(this)}
           />
-
           <View style={{ flex: 1 }} />
         </SafeAreaView>
       </KeyboardAvoidingView>
@@ -88,12 +88,10 @@ class LoginScreen extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    token: state.Token,
-  };
+  return {};
 }
 
 function mapDispatchTopProps(dispatch) {
   return {};
 }
-export default connect(mapStateToProps, mapDispatchTopProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchTopProps)(RegisterScreen);

@@ -8,6 +8,7 @@ export class ROUTE_NAME {
   static TAB_SCREEN_PROFIL = "Profile";
   //LOGIN
   static LOGIN_SCREEN = "ScreenLogin";
+  static SIGNUP_SCREEN = "Register";
 }
 // NAME REST API
 export class RESTKEY {

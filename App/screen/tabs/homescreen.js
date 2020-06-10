@@ -12,7 +12,7 @@ class HomeScreen extends Component {
     this.state = {};
   }
   componentDidMount() {
-    Constant.TEMP_TOKEN = this.props.token;
+    //Constant.TEMP_TOKEN = this.props.token;
   }
 
   render() {

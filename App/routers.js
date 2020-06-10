@@ -16,7 +16,23 @@ import { convertWidth, convertHeight } from "./config/global";
 import HomeScreen from "./screen/tabs/homescreen";
 import ProfilScreen from "./screen/tabs/profilscreen";
 import LoginScreen from "./screen/login/loginscreen";
+import RegisterScreen from "./screen/login/registerscreen";
 
+//Login Stack
+const LoginStackNavigation = createStackNavigator(
+  {
+    Login: {
+      screen: LoginScreen,
+    },
+    Register: {
+      screen: RegisterScreen,
+    },
+  },
+  {
+    initialRouteName: "Login",
+    headerMode: "none",
+  }
+);
 //TAB
 const hIcon = 3;
 const MainTabNavigation = createBottomTabNavigator(
@@ -126,18 +142,7 @@ const MainTabNavigation = createBottomTabNavigator(
     }),
   }
 );
-//Login Stack
-const LoginStackNavigation = createStackNavigator(
-  {
-    Login: {
-      screen: LoginScreen,
-    },
-  },
-  {
-    initialRouteName: "ScreenMain",
-    headerMode: "none",
-  }
-);
+
 // MAIN ROUTE
 const MainStackNavigator = createAppContainer(
   createStackNavigator(
@@ -148,6 +153,7 @@ const MainStackNavigator = createAppContainer(
       },
       ScreenLogin: {
         screen: LoginStackNavigation,
+        path: "",
       },
     },
     {
@@ -161,6 +167,7 @@ class RootScreen extends Component {
   render() {
     return (
       <MainStackNavigator
+        style={{ flex: 1 }}
         ref={(navigatorRef) => {
           NavigationService.setTopLevelNavigator(navigatorRef);
         }}
