@@ -7,6 +7,7 @@ class Constant {
     static FIREBASE_TOKEN = "FIREBASE_TOKEN";
   
     static TOKET_LOCATIONIQ = ""; //Token my.locationiq.com
+    static TEMP_TOKEN = ""; //Token Temp
     //Rest
     static SERVER_ID = 1; //DEBUG USE 0  // RELEASE USE 1
     //ONESIGN

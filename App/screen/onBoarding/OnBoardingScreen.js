@@ -6,11 +6,15 @@ import { Container } from "../../containers/screen";
 import { AppStyle } from "../../styles/styles";
 import { Buttons } from "../../components/button";
 import { ROUTE_NAME } from "../../config/Keys";
+import Constant from "../../config/Constant";
 
 class OnBoardingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+  componentDidMount(){
+      Constant.TEMP_TOKEN = this.props.token
   }
   onDone(){
       this.props.updateFirstOpen(false)
@@ -20,7 +24,7 @@ class OnBoardingScreen extends Component {
     return (
       <Container statusbarHidden>
         <View style={AppStyle.dummyScreenTitle}>
-          <Text>{`OnBoarding Screen`}</Text>
+          <Text >{`OnBoarding Screen`}</Text>
         </View>
         <Buttons enableStick onPress={this.onDone.bind(this)} />
       </Container>
@@ -28,7 +32,8 @@ class OnBoardingScreen extends Component {
   }
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+  };
 }
 
 function mapDispatchTopProps(dispatch) {

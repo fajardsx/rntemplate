@@ -33,12 +33,13 @@ export const AppStyle = StyleSheet.create({
     fontSize:moderateScale(17),
     color:colors.COLOR_BUTTON_LABEL_1
   },
-  
+
   /// TEMPORARY
   dummyScreenTitle:{
     width:convertWidth(100),
     height:convertHeight(25),
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    fontSize:21
   }
 });

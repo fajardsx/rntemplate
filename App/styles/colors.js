@@ -1,8 +1,8 @@
 class colors {
   //
-  static COLOR_STATUSBAR = 'blue'
+  static COLOR_STATUSBAR = '#228aca'
   //PRIMARY COLOR
-  static COLOR_PRIMARY_1 = "#F8F9FB";
+  static COLOR_PRIMARY_1 = "#f8f9fa";
   static COLOR_PRIMARY_1 = "#FFFFFF";
   //PRIMARY TXT COLOR
   static COLOR_TEXT_1 = "#000000";
