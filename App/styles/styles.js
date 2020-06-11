@@ -17,10 +17,16 @@ export const AppStyle = StyleSheet.create({
     alignItems: "center",
   },
   headerdefault: {
+    flexDirection: "row",
     width: convertWidth(100),
-    height: convertHeight(10),
+    height: convertHeight(8),
     alignItems: "center",
-    backgroundColor: colors.COLOR_PRIMARY_1,
+    backgroundColor: colors.COLOR_STATUSBAR,
+  },
+  headerLabeldefault: {
+    width: "100%",
+    textAlign: "center",
+    color: colors.COLOR_TEXT_2,
   },
   buttondefault: {
     width: convertWidth(100),
@@ -45,7 +51,7 @@ export const AppStyle = StyleSheet.create({
   /// TEMPORARY
   dummyScreenTitle: {
     width: convertWidth(100),
-    height: convertHeight(25),
+    height: convertHeight(10),
     justifyContent: "center",
     alignItems: "center",
     fontSize: 21,

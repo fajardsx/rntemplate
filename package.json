@@ -30,6 +30,7 @@
     "react-native-fs": "^2.14.1",
     "react-native-geolocation-service": "^3.1.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-map": "^0.0.1",
     "react-native-maps": "0.26.1",
