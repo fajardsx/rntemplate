@@ -26,7 +26,7 @@ class InitScreen extends Component {
       this.setState({ isloading: true });
       if (this.props.isfirst) {
         this.props.navigation.navigate(ROUTE_NAME.Screen_OnBoarding);
-      }else{
+      } else {
         this.props.navigation.navigate(ROUTE_NAME.Screen_Apps);
       }
     }

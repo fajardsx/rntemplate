@@ -26,6 +26,7 @@ export const AppStyle = StyleSheet.create({
   headerLabeldefault: {
     width: "100%",
     textAlign: "center",
+    fontSize: 18,
     color: colors.COLOR_TEXT_2,
   },
   buttondefault: {

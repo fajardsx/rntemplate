@@ -1,15 +1,23 @@
 import React, { Component } from "react";
-import { View, Text, Platform, KeyboardAvoidingView, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  BackHandler,
+} from "react-native";
 import { Container } from "../../containers/screen";
 import { AppStyle } from "../../styles/styles";
 import Constant from "../../config/Constant";
 import { connect } from "react-redux";
 import ACTION_TYPE from "../../redux/actions/indexactions";
 import Forminput from "../../components/Forminput";
-import { addSpace, convertWidth } from "./../../config/global";
+import { addSpace, convertWidth, handleBackButtonClick } from "./../../config/global";
 import { Buttons } from "./../../components/button";
 import colors from "./../../styles/colors";
 import { ROUTE_NAME } from "./../../config/Keys";
+import { LabelText } from "../../components/labelManager";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -18,6 +26,11 @@ class LoginScreen extends Component {
   }
   componentDidMount() {
     //Constant.TEMP_TOKEN = this.props.token;
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+  }
+  componentWillUnmount() {
+    //Constant.TEMP_TOKEN = this.props.token;
+    //BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
   }
   onSignUp() {
     this.props.navigation.navigate(ROUTE_NAME.SIGNUP_SCREEN);
@@ -31,7 +44,7 @@ class LoginScreen extends Component {
         style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
           <View style={AppStyle.dummyScreenTitle}>
-            <Text>{`Login`}</Text>
+            <LabelText>Login</LabelText>
           </View>
           <Forminput
             placeholder={"Email"}

@@ -20,9 +20,10 @@ import dateFns from "date-fns";
 import moment from "moment";
 import "moment/locale/id";
 import "moment/min/moment-with-locales";
-import colors from "../styles/colors"
-import {ROUTE_NAME} from '../config/Keys'
- 
+import colors from "../styles/colors";
+import { ROUTE_NAME } from "../config/Keys";
+import NavigationServices from "../NavigationServices";
+
 export default class Global {
   static istablet = false;
 }
@@ -85,7 +86,7 @@ export function loadingScreen(isTabHeader) {
         width: convertWidth(100),
         height: convertHeight(100),
         zIndex: 100,
-        paddingBottom: isTabHeader ? 150 : 0
+        paddingBottom: isTabHeader ? 150 : 0,
       }}>
       <ActivityIndicator size="large" color={colors.LOADING_COLOR} />
     </View>
@@ -109,9 +110,9 @@ export function getLinkApp() {
 //--------------------------------------------------------------------------------------------
 //SORT ARRAY OF OBJECT
 export function targetSort(fields) {
-  return function(a, b) {
+  return function (a, b) {
     return fields
-      .map(function(o) {
+      .map(function (o) {
         var dir = 1;
         if (o[0] === "-") {
           dir = -1;
@@ -127,24 +128,60 @@ export function targetSort(fields) {
   };
 }
 //--------------------------------------------------------------------------------------------
-//BACK EXIT
-export function handleBackButtonClick(router) {
-  console.log("back", router);
-  if (router.state.routeName == ROUTE_NAME.Screen_Apps) {
-    Alert.alert(
-      "",
-      "Do you want to exit the application?",
-      [
-        { text: "Yes", onPress: () => BackHandler.exitApp(), style: "default" },
-        { text: "No", onPress: () => console.log(""), style: "cancel" }
-      ],
-      {
-        cancelable: false
+//BACK HANDLE AND EXIT
+export function handleBackButtonClick() {
+  console.log("back");
+  if (NavigationServices) {
+    console.log("back", NavigationServices.getNavigatorRef());
+    const lastIndex = NavigationServices.getNavigatorRef().state.nav.routes.length - 1;
+    let routeName = NavigationServices.getNavigatorRef().state.nav.routes[lastIndex].routeName;
+    console.log("current routename", routeName);
+    if (routeName == ROUTE_NAME.TAB_SCREEN) {
+      //Call Exit Alert
+      Alert.alert(
+        "",
+        "Do you want to exit the application?",
+        [
+          { text: "Yes", onPress: () => BackHandler.exitApp(), style: "default" },
+          { text: "No", onPress: () => console.log(""), style: "cancel" },
+        ],
+        {
+          cancelable: false,
+        }
+      );
+    } else if (routeName == ROUTE_NAME.LOGIN_SCREEN) {
+      const lastChildIndex =
+        NavigationServices.getNavigatorRef().state.nav.routes[lastIndex].routes.length - 1;
+      let routeChildName = NavigationServices.getNavigatorRef().state.nav.routes[lastIndex].routes[
+        lastChildIndex
+      ].routeName;
+      console.log("current child routename", routeChildName);
+      if (routeChildName == "Register") {
+        NavigationServices.goBack();
+      } else {
+        NavigationServices.navigateAndReset(ROUTE_NAME.TAB_SCREEN);
       }
-    );
-  } else {
-    router.goBack();
+    } else {
+      console.log("current routename back");
+      NavigationServices.goBack();
+    }
   }
+  // if (router.state.routeName == ROUTE_NAME.Screen_Apps) {
+  //   Alert.alert(
+  //     "",
+  //     "Do you want to exit the application?",
+  //     [
+  //       { text: "Yes", onPress: () => BackHandler.exitApp(), style: "default" },
+  //       { text: "No", onPress: () => console.log(""), style: "cancel" }
+  //     ],
+  //     {
+  //       cancelable: false
+  //     }
+  //   );
+  // } else {
+
+  //   router.goBack();
+  // }
 
   return true;
 }
@@ -157,11 +194,7 @@ export function handleBackButtonClick(router) {
 export function convertToRupiah(angka, currency = "Rp ") {
   if (angka) {
     var rupiah = "";
-    var angkarev = angka
-      .toString()
-      .split("")
-      .reverse()
-      .join("");
+    var angkarev = angka.toString().split("").reverse().join("");
     for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + ".";
     return (
       currency +
@@ -195,7 +228,7 @@ export function haveUpperCase(value) {
     return false;
   }
   let found = false;
-  const isUpperCase = string => /^[A-Z]*$/.test(string);
+  const isUpperCase = (string) => /^[A-Z]*$/.test(string);
   for (let index = 0; index < value.length; index++) {
     const element = value.charAt(index);
     if (isUpperCase(element) == true) {
@@ -222,7 +255,7 @@ export function haveNumber(value) {
     return false;
   }
   let found = false;
-  const isUpperCase = string => /^[0-9]*$/.test(string);
+  const isUpperCase = (string) => /^[0-9]*$/.test(string);
   for (let index = 0; index < value.length; index++) {
     const element = value.charAt(index);
     if (isUpperCase(element) == true) {
@@ -239,7 +272,7 @@ export function onlyNumber(value) {
   }
   let charNumberCount = 0;
   let found = false;
-  const isNumber = string => /^[0-9]*$/.test(string);
+  const isNumber = (string) => /^[0-9]*$/.test(string);
   for (let index = 0; index < value.length; index++) {
     const element = value.charAt(index);
     if (isNumber(element) == true) {
@@ -267,10 +300,10 @@ export function generateHash(length) {
 }
 
 // youtube thumbnail generator
-export const Youtube = (function() {
+export const Youtube = (function () {
   var video, results;
 
-  var getThumb = function(url, size) {
+  var getThumb = function (url, size) {
     if (url === null) {
       return "";
     }
@@ -285,12 +318,12 @@ export const Youtube = (function() {
   };
 
   return {
-    thumb: getThumb
+    thumb: getThumb,
   };
 })();
 
 // youtube link validator
-export const validateYouTubeUrl = youtubeUrl => {
+export const validateYouTubeUrl = (youtubeUrl) => {
   var url = youtubeUrl;
   if (url != undefined || url != "") {
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;

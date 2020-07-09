@@ -23,7 +23,7 @@ export const HeaderHome = (props) => (
 );
 // DEFAULT PROPS
 HeaderHome.defaultProps = {
-  title: "Title Label",
+  title: "Title",
   isBack: false,
   rightType: 0,
   onBack: () => {

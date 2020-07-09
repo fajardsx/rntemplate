@@ -117,9 +117,12 @@ class Constant {
   static URL_DUMMY = "https://dotcomsolution.000webhostapp.com/rapsody/";
   static URL_BLANK_CONTENT =
     "https://rhapsodie.co/uploads/10/2019-03/9fdeb5456f63c999f756a74d8d4af264.jpeg";
-  static URL_BLANK_PROFIL = "https://rhapsodie.co/assets/img/default_avatar.jpg";
+  static URL_BLANK_PROFIL = "../assets/img/default_avatar.jpg";
+  static URL_NO_IMAGE = "../assets/img/no-image-found.png";
   static URL_BLANK_COVER =
     "https://rhapsodie.co/uploads/10/2019-03/845c0978b9a8eff0b21bd94c2b149833.png";
+  // DEEP LINKING
+  static PREFIX = /https:\/\/www.rhapsodie.co\/|https:\/\/www.rhapsodie.co\/m\/|https:\/\/rhapsodie.co\/m\/|rhapsodie.co:\/m|rhapsodie.co:\/\/|https:\/\/rhapsodie.co\//;
 }
 
 export default Constant;

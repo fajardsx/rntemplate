@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, BackHandler } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
@@ -12,11 +12,14 @@ import OnBoardingScreen from "./screen/onBoarding/OnBoardingScreen";
 import { ROUTE_NAME } from "./config/Keys";
 import colors from "./styles/colors";
 import { moderateScale } from "./styles/scaling";
-import { convertWidth, convertHeight } from "./config/global";
+import { convertWidth, convertHeight, handleBackButtonClick } from "./config/global";
 import HomeScreen from "./screen/tabs/homescreen";
 import ProfilScreen from "./screen/tabs/profilscreen";
 import LoginScreen from "./screen/login/loginscreen";
 import RegisterScreen from "./screen/login/registerscreen";
+import Constant from "./config/Constant";
+import TransitionCustomConfig from "./components/NaviTransitionConfig";
+import DetailCell from "./screen/screens/DetailCell";
 
 //Login Stack
 const LoginStackNavigation = createStackNavigator(
@@ -31,6 +34,7 @@ const LoginStackNavigation = createStackNavigator(
   {
     initialRouteName: "Login",
     headerMode: "none",
+    transitionConfig: () => TransitionCustomConfig(),
   }
 );
 //TAB
@@ -155,8 +159,13 @@ const MainStackNavigator = createAppContainer(
         screen: LoginStackNavigation,
         path: "",
       },
+      ScreenDetail: {
+        screen: DetailCell,
+        path: "",
+      },
     },
     {
+      transitionConfig: () => TransitionCustomConfig(),
       initialRouteName: "ScreenTab",
       headerMode: "none",
     }
@@ -164,9 +173,19 @@ const MainStackNavigator = createAppContainer(
 );
 
 class RootScreen extends Component {
+  componentDidMount() {
+    //Constant.TEMP_TOKEN = this.props.token;
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+  }
+  componentWillUnmount() {
+    //Constant.TEMP_TOKEN = this.props.token;
+    console.log("remove backhandle");
+    BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+  }
   render() {
     return (
       <MainStackNavigator
+        uriPrefix={Constant.PREFIX}
         style={{ flex: 1 }}
         ref={(navigatorRef) => {
           NavigationService.setTopLevelNavigator(navigatorRef);
@@ -190,6 +209,7 @@ const AppStack = createAppContainer(
       },
     },
     {
+      transitionConfig: () => TransitionCustomConfig(),
       initialRouteName: "InitScreen",
       headerMode: "none",
     }

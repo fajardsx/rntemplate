@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export const Container = (props) => (
-  <View style={[AppStyle.container, [props.style]]}>
+  <View style={[AppStyle.container, props.style]}>
     {/* <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={{ flex: 1 }}

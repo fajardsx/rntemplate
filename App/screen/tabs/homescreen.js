@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, FlatList } from "react-native";
 import { Container } from "../../containers/screen";
 import { AppStyle } from "../../styles/styles";
 import Constant from "../../config/Constant";
@@ -7,44 +7,65 @@ import { connect } from "react-redux";
 import ACTION_TYPE from "../../redux/actions/indexactions";
 import { HeaderHome, HeaderSearch } from "../../components/header";
 import { DrawHorizontalLine } from "../../components/line";
+import { PhotoProfil } from "../../components/imagesManager";
+import { convertWidth } from "../../config/global";
+import { LabelText } from "../../components/labelManager";
+import { CellHome } from "../../components/cell";
+import ListCell from "./tabcomponent/ListCell";
 
+const HomeBody = (props) => (
+  <View>
+    <LabelText>Home</LabelText>
+    <ListCell data={props.data} />
+  </View>
+);
+//
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data: null,
+    };
   }
   componentDidMount() {
     //Constant.TEMP_TOKEN = this.props.token;
+    let data = [];
+    for (var i = 0; i < 20; i++) {
+      data.push({ id: i, name: "User_" + i, isSelect: false });
+    }
+    this.setState({ data });
   }
 
   render() {
+    console.log("Home Render");
     return (
       <Container>
-        <HeaderHome />
-        <View style={AppStyle.dummyScreenTitle}>
-          <Text>{`Home Screen`}</Text>
-        </View>
+        <HeaderHome title={"Home"} />
         {this.homeHeader()}
         <DrawHorizontalLine />
+        {this.state.data && <HomeBody data={this.state.data} />}
       </Container>
     );
   }
   homeHeader = () => (
-    <View style={{ flexDirection: "row", paddingHorizontal: 10 }}>
-      <View style={{ flex: 0.8 }}>
-        <Text>TITLE</Text>
-        <Text>Items</Text>
+    <View
+      style={{
+        flexDirection: "row",
+        padding: 10,
+        justifyContent: "space-around",
+        alignItems: "center",
+      }}>
+      <View style={{ width: convertWidth(70) }}>
+        <LabelText>Name user</LabelText>
+        <LabelText>Data user</LabelText>
       </View>
-      <View style={{ flex: 0.12, borderRadius: 100, borderWidth: 0.5, overflow: "hidden" }}>
-        <Image
-          style={{
-            width: "100%",
-            aspectRatio: 1,
-          }}
-          resizeMode={"cover"}
-          source={{ uri: Constant.URL_BLANK_PROFIL }}
-        />
-      </View>
+
+      <PhotoProfil
+        styles={{
+          width: convertWidth(15),
+          height: convertWidth(15),
+        }}
+      />
     </View>
   );
 }
