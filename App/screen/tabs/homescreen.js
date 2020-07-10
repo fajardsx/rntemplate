@@ -8,17 +8,13 @@ import ACTION_TYPE from "../../redux/actions/indexactions";
 import { HeaderHome, HeaderSearch } from "../../components/header";
 import { DrawHorizontalLine } from "../../components/line";
 import { PhotoProfil } from "../../components/imagesManager";
-import { convertWidth } from "../../config/global";
+import { convertWidth, formateDate, addSpace } from "../../config/global";
 import { LabelText } from "../../components/labelManager";
 import { CellHome } from "../../components/cell";
 import ListCell from "./tabcomponent/ListCell";
+import UserDashboard from "../components/UserDashboard";
 
-const HomeBody = (props) => (
-  <View>
-    <LabelText>Home</LabelText>
-    <ListCell data={props.data} />
-  </View>
-);
+const HomeBody = (props) => <ListCell data={props.data} />;
 //
 class HomeScreen extends Component {
   constructor(props) {
@@ -31,7 +27,12 @@ class HomeScreen extends Component {
     //Constant.TEMP_TOKEN = this.props.token;
     let data = [];
     for (var i = 0; i < 20; i++) {
-      data.push({ id: i, name: "User_" + i, isSelect: false });
+      let workers = [];
+      const maxWorker = 1 + Math.random() * 5;
+      for (var w = 0; w < maxWorker; w++) {
+        workers.push({ id: `${i}${w}`, name: `Worker_${w}`, isSelect: false });
+      }
+      data.push({ id: i, name: "Place_" + i, isSelect: false, worker: workers });
     }
     this.setState({ data });
   }
@@ -39,40 +40,24 @@ class HomeScreen extends Component {
   render() {
     console.log("Home Render");
     return (
-      <Container>
+      <View style={AppStyle.container}>
         <HeaderHome title={"Home"} />
-        {this.homeHeader()}
-        <DrawHorizontalLine />
-        {this.state.data && <HomeBody data={this.state.data} />}
-      </Container>
+        <UserDashboard />
+        {addSpace(2)}
+        <LabelText style={{ fontSize: 21 }}>{formateDate(new Date(), "MMMM YYYY")}</LabelText>
+        <Container>
+          {this.state.data && <HomeBody user={this.props.user} data={this.state.data} />}
+        </Container>
+      </View>
     );
   }
-  homeHeader = () => (
-    <View
-      style={{
-        flexDirection: "row",
-        padding: 10,
-        justifyContent: "space-around",
-        alignItems: "center",
-      }}>
-      <View style={{ width: convertWidth(70) }}>
-        <LabelText>Name user</LabelText>
-        <LabelText>Data user</LabelText>
-      </View>
-
-      <PhotoProfil
-        styles={{
-          width: convertWidth(15),
-          height: convertWidth(15),
-        }}
-      />
-    </View>
-  );
+  homeHeader = () => <UserDashboard />;
 }
 
 function mapStateToProps(state) {
   return {
     token: state.Token,
+    user: state.User,
   };
 }
 

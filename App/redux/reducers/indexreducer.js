@@ -6,6 +6,7 @@ const initialState = {
   ServerID: 0,
   Token: "",
   FirstOpen: true,
+  User: model.userDefault,
 };
 
 //REDUCER
@@ -17,6 +18,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, FirstOpen: action.value };
     case ACTION_TYPE.UPDATE_TOKEN:
       return { ...state, Token: action.value };
+    case ACTION_TYPE.UPDATE_USER:
+      return { ...state, User: action.value };
   }
   return state;
 };

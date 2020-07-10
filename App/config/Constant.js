@@ -123,6 +123,13 @@ class Constant {
     "https://rhapsodie.co/uploads/10/2019-03/845c0978b9a8eff0b21bd94c2b149833.png";
   // DEEP LINKING
   static PREFIX = /https:\/\/www.rhapsodie.co\/|https:\/\/www.rhapsodie.co\/m\/|https:\/\/rhapsodie.co\/m\/|rhapsodie.co:\/m|rhapsodie.co:\/\/|https:\/\/rhapsodie.co\//;
+
+  //ROLE
+  static ROLE_INLOGIN = 1;
+  static ROLE_INSELECTSCHEDULE = 2;
+  static ROLE_READYSTARTSCHEDULE = 3;
+  static ROLE_ADDDOCTORAGAIN = 4;
+  static ROLE_FINISHTODAY = 5;
 }
 
 export default Constant;

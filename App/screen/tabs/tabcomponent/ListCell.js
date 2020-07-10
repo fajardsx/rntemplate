@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, FlatList } from "react-native";
-import { CellHome } from "../../../components/cell";
+import { CellHome, CellHomePlace } from "../../../components/cell";
 import NavigationServices from "../../../NavigationServices";
 
 export default class ListCell extends Component {
@@ -21,18 +21,25 @@ export default class ListCell extends Component {
     const { data } = this.state;
     const datatemp = [...data];
     console.log("Press ", i);
-    let getIndex = datatemp.findIndex((res) => {
-      return res.id == i;
+    let getIndex = datatemp.filter((res) => {
+      return res.id == i.parentid;
     });
-    if (getIndex > -1) {
-      console.log("Found INdex ", getIndex);
-      datatemp[getIndex].isSelect = !datatemp[getIndex].isSelect;
-      console.log("Found datatemp ", datatemp);
-      if (datatemp[getIndex].isSelect == true) {
-        NavigationServices.navigate("ScreenDetail");
-      }
-      this.setState({ data: datatemp });
+    console.log("parent found ", getIndex);
+    if (getIndex.length > 0) {
+      let selectWorker = getIndex[0].worker.find((res) => {
+        return res.id == i.id;
+      });
+      console.log("child found ", selectWorker);
     }
+    // if (getIndex > -1) {
+    //   console.log("Found INdex ", getIndex);
+    //   datatemp[getIndex].isSelect = !datatemp[getIndex].isSelect;
+    //   //console.log("Found datatemp ", datatemp);
+    //   if (datatemp[getIndex].isSelect == true) {
+    //     //NavigationServices.navigate("ScreenDetail");
+    //   }
+    //   this.setState({ data: datatemp });
+    // }
   };
 
   render() {
@@ -47,7 +54,7 @@ export default class ListCell extends Component {
           updateCellsBatchingPeriod={1000}
           windowSize={2}
           removeClippedSubviews={true}
-          scrollEnabled={false}
+          // scrollEnabled={false}
           renderItem={this.renderItems}
           keyExtractor={(item, index) => {
             return "cell" + index;
@@ -56,5 +63,7 @@ export default class ListCell extends Component {
       </View>
     );
   }
-  renderItems = ({ item, index }) => <CellHome item={item} onPress={this.onselect.bind(this)} />;
+  renderItems = ({ item, index }) => (
+    <CellHomePlace item={item} onPress={this.onselect.bind(this)} />
+  );
 }

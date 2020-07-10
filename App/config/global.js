@@ -186,6 +186,12 @@ export function handleBackButtonClick() {
   return true;
 }
 //--------------------------------------------------------------------------------------------
+//get format date
+export function formateDate(value, defaults = "DD MMM YYYY") {
+  moment.locale("id");
+  return moment(value).format(defaults);
+}
+//--------------------------------------------------------------------------------------------
 
 /**
  * Usage example:

@@ -7,7 +7,7 @@ import Forminput from "../components/Forminput";
 
 // COMPONENT
 export const HeaderHome = (props) => (
-  <View style={AppStyle.headerdefault}>
+  <View style={[AppStyle.headerdefault, { position: props.sticky ? "absolute" : "relative" }]}>
     <View style={{ flex: 0.1 }}>
       {props.isBack && (
         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

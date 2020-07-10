@@ -13,7 +13,7 @@ export const PhotoProfil = (props) => (
         borderWidth: 0.5,
         overflow: "hidden",
       },
-      props.styles,
+      props.style,
     ]}>
     <Image
       style={{
