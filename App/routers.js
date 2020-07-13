@@ -20,6 +20,8 @@ import RegisterScreen from "./screen/login/registerscreen";
 import Constant from "./config/Constant";
 import TransitionCustomConfig from "./components/NaviTransitionConfig";
 import DetailCell from "./screen/screens/DetailCell";
+import AuthorizeUser from "./screen/screens/AuthorizeUser";
+import forgotpassword from "./screen/login/forgotpassword";
 
 //Login Stack
 const LoginStackNavigation = createStackNavigator(
@@ -29,6 +31,9 @@ const LoginStackNavigation = createStackNavigator(
     },
     Register: {
       screen: RegisterScreen,
+    },
+    ForgotPass: {
+      screen: forgotpassword,
     },
   },
   {
@@ -202,6 +207,12 @@ const AppStack = createAppContainer(
       },
       OnboardingScreen: {
         screen: OnBoardingScreen,
+      },
+      AuthorizeScreen: {
+        screen: AuthorizeUser,
+      },
+      FirstLoginScreen: {
+        screen: LoginStackNavigation,
       },
       AppsScreen: {
         screen: RootScreen,

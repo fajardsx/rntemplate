@@ -16,7 +16,7 @@ class Constant {
   static APPSTATUS = "";
   static NAME_APPS = "Project X";
   //VERSION
-  static APP_VERSION = "1";
+  static APP_VERSION = "19";
   static APP_STATUS = "";
   static SERVER_APP_VERSION = "0.0.1";
   static FORCE_UPDATE = "no";
@@ -43,12 +43,10 @@ class Constant {
   };
 
   static WEB =
-    this.SERVER_ID === 0
-      ? "https://beta2.dotcomsolution.co.id/rhapsodie/public"
-      : "https://www.rhapsodie.co";
+    this.SERVER_ID === 0 ? "https://himalayafrontline.com/public/api" : "https://www.rhapsodie.co";
 
   // WILL REPLACE WITH RESLINK FROM API ENVIROTMENT
-  static RESTLINK = "https://beta3.dotcomsolution.co.id/rhapsodie-api/public";
+  static RESTLINK = "https://himalayafrontline.com/public/api";
 
   static RESTPAYLINK =
     this.SERVER_ID === 0
@@ -130,6 +128,16 @@ class Constant {
   static ROLE_READYSTARTSCHEDULE = 3;
   static ROLE_ADDDOCTORAGAIN = 4;
   static ROLE_FINISHTODAY = 5;
+  static ROLE_YESTERDAY = 6;
+
+  //ENVI CONTROLLER
+  static getEnvi(data, name) {
+    const getdata = data.find((res) => {
+      return res.name == name;
+    });
+
+    return getdata.content;
+  }
 }
 
 export default Constant;

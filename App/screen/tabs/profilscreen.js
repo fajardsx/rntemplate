@@ -35,7 +35,7 @@ class ProfilScreen extends Component {
 
   checkLogin(force = false) {
     if (force) {
-      if (this.props.token == null || (this.props.token != null && this.props.token.length == 0)) {
+      if (this.props.user == null) {
         console.log("profilscreen.js => to login ");
         NavigationServices.navigate(ROUTE_NAME.LOGIN_SCREEN);
       }
@@ -81,6 +81,7 @@ class ProfilScreen extends Component {
 function mapStateToProps(state) {
   return {
     token: state.Token,
+    user: state.User,
   };
 }
 

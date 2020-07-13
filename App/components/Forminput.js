@@ -57,7 +57,7 @@ export default class Forminput extends PureComponent {
         <TextInput
           keyboardType={this.props.keyboardtype ? this.props.keyboardtype : "default"}
           multiline={this.props.multiline ? this.props.multiline : false}
-          secureTextEntry={this.props.securetxt ? this.props.securetxt : false}
+          secureTextEntry={this.props.secureTextEntry ? this.props.secureTextEntry : false}
           editable={this.props.editable != null ? this.props.editable : true}
           onChangeText={this.props.onChangeText}
           defaultValue={this.props.defaultText}

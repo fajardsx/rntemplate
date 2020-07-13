@@ -13,27 +13,26 @@ class OnBoardingScreen extends Component {
     super(props);
     this.state = {};
   }
-  componentDidMount(){
-      Constant.TEMP_TOKEN = this.props.token
+  componentDidMount() {
+    Constant.TEMP_TOKEN = this.props.token;
   }
-  onDone(){
-      this.props.updateFirstOpen(false)
-      this.props.navigation.navigate(ROUTE_NAME.Screen_Apps)
+  onDone() {
+    this.props.updateFirstOpen(false);
+    this.props.navigation.navigate(ROUTE_NAME.Screen_FirstLogin);
   }
   render() {
     return (
       <Container statusbarHidden>
         <View style={AppStyle.dummyScreenTitle}>
-          <Text >{`OnBoarding Screen`}</Text>
+          <Text>{`OnBoarding Screen`}</Text>
         </View>
-        <Buttons enableStick onPress={this.onDone.bind(this)} />
+        <Buttons label={"Next"} enableStick onPress={this.onDone.bind(this)} />
       </Container>
     );
   }
 }
 function mapStateToProps(state) {
-  return {
-  };
+  return {};
 }
 
 function mapDispatchTopProps(dispatch) {

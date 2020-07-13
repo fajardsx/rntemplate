@@ -20,6 +20,10 @@ import dateFns from "date-fns";
 import moment from "moment";
 import "moment/locale/id";
 import "moment/min/moment-with-locales";
+import Toast from "react-native-tiny-toast";
+import haversine from "haversine";
+import { checkMultiple, check, PERMISSIONS } from "react-native-permissions";
+
 import colors from "../styles/colors";
 import { ROUTE_NAME } from "../config/Keys";
 import NavigationServices from "../NavigationServices";
@@ -133,6 +137,9 @@ export function handleBackButtonClick() {
   console.log("back");
   if (NavigationServices) {
     console.log("back", NavigationServices.getNavigatorRef());
+    if (NavigationServices.getNavigatorRef() == undefined) {
+      return;
+    }
     const lastIndex = NavigationServices.getNavigatorRef().state.nav.routes.length - 1;
     let routeName = NavigationServices.getNavigatorRef().state.nav.routes[lastIndex].routeName;
     console.log("current routename", routeName);
@@ -343,4 +350,45 @@ export const validateYouTubeUrl = (youtubeUrl) => {
     }
   }
 };
+//--------------------------------------------------------------------------------------------
+export function calcDistance(prevLatLng, newLatLng) {
+  //const { prevLatLng } = this.state;
+  return haversine(prevLatLng, newLatLng, { unit: "km" }) || 0;
+}
+//--------------------------------------------------------------------------------------------
+// TOAST
+export const showToast = (msg = "", colors = "#bfbfbf", txtColor = colors.TOAST_TEXT) => {
+  return Toast.show(msg, {
+    position: Toast.position.BOTTOM,
+    containerStyle: {
+      backgroundColor: colors,
+      paddingHorizontal: 10,
+    },
+    textColor: txtColor,
+    textStyle: {},
+    mask: true,
+    maskStyle: {},
+  });
+};
+//--------------------------------------------------------------------------------------------
+// PERMISSION
+export const checkPermission = async () => {
+  let respons = {
+    location: null,
+    storage: null,
+  };
+  respons = await checkMultiple([
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+  ]).then((response) => {
+    console.log("checkPermission ", response);
+    let result = respons;
+    result.location = response[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+    result.storage = response[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE];
+    return result;
+  });
+  return respons;
+};
+//--------------------------------------------------------------------------------------------
+
 //--------------------------------------------------------------------------------------------

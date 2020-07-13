@@ -6,7 +6,12 @@ import Constant from "../config/Constant";
 
 export const Buttons = (props) => (
   <TouchableOpacity
-    style={[AppStyle.buttondefault, props.style,props.enableStick?{position:'absolute',bottom:0}:null]}
+    disabled={props.disabled}
+    style={[
+      AppStyle.buttondefault,
+      props.style,
+      props.enableStick ? { position: "absolute", bottom: 0 } : null,
+    ]}
     onPress={() =>
       props.onPress ? props.onPress() : Alert.alert(Constant.NAME_APPS, "No Event Click")
     }>

@@ -24,19 +24,17 @@ class HomeScreen extends Component {
     };
   }
   componentDidMount() {
-    //Constant.TEMP_TOKEN = this.props.token;
     let data = [];
-    for (var i = 0; i < 20; i++) {
-      let workers = [];
-      const maxWorker = 1 + Math.random() * 5;
-      for (var w = 0; w < maxWorker; w++) {
-        workers.push({ id: `${i}${w}`, name: `Worker_${w}`, isSelect: false });
-      }
-      data.push({ id: i, name: "Place_" + i, isSelect: false, worker: workers });
-    }
-    this.setState({ data });
+    this.onInitSchedule();
   }
-
+  onInitSchedule() {
+    const { visitschedule } = this.props;
+    let data = JSON.parse(visitschedule).visit_schedule;
+    console.log("Schedule ", data);
+    this.setState({
+      data,
+    });
+  }
   render() {
     console.log("Home Render");
     return (
@@ -58,10 +56,11 @@ function mapStateToProps(state) {
   return {
     token: state.Token,
     user: state.User,
+    visitschedule: state.VisitSchedule,
   };
 }
 
-function mapDispatchTopProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     updateFirstOpen: (data) =>
       dispatch({
@@ -70,4 +69,4 @@ function mapDispatchTopProps(dispatch) {
       }),
   };
 }
-export default connect(mapStateToProps, mapDispatchTopProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

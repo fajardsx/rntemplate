@@ -19,7 +19,8 @@ class UserDashboard extends Pages {
     };
   }
   getTextButtonUser() {
-    switch (this.props.user.currentRole) {
+    let ROLE = this.props.user ? this.props.user.currentRole : 1;
+    switch (ROLE) {
       case Constant.ROLE_INLOGIN:
         return "Start";
       case Constant.ROLE_INSELECTSCHEDULE:
@@ -30,12 +31,15 @@ class UserDashboard extends Pages {
         return "Finish";
       case Constant.ROLE_FINISHTODAY:
         return "End This Day";
+      case Constant.ROLE_YESTERDAY:
+        return "Today is End";
       default:
         return "Start";
     }
   }
   getbgColorUser() {
-    switch (this.props.user.currentRole) {
+    let ROLE = this.props.user ? this.props.user.currentRole : 1;
+    switch (ROLE) {
       case Constant.ROLE_INLOGIN:
         return colors.USERBUTTON_ACTIVE_COLOR;
       case Constant.ROLE_INSELECTSCHEDULE:
@@ -46,10 +50,20 @@ class UserDashboard extends Pages {
         return colors.USERBUTTON_ACTIVE_COLOR;
       case Constant.ROLE_FINISHTODAY:
         return colors.USERBUTTON_UNACTIVE_COLOR;
+      case Constant.ROLE_YESTERDAY:
+        return colors.USERBUTTON_UNACTIVE_COLOR;
       default:
         return colors.USERBUTTON_ACTIVE_COLOR;
     }
   }
+  onButtonPress() {
+    let ROLE = this.props.user ? this.props.user.currentRole : 1;
+    switch (ROLE) {
+      case Constant.ROLE_INLOGIN:
+        break;
+    }
+  }
+  //
   render() {
     const { isConnect } = this.state;
     return (
@@ -66,8 +80,8 @@ class UserDashboard extends Pages {
             <View>
               <PhotoProfil
                 styles={{
-                  width: convertWidth(15),
-                  height: convertWidth(15),
+                  width: convertWidth(12),
+                  height: convertWidth(12),
                 }}
               />
               {
@@ -86,13 +100,25 @@ class UserDashboard extends Pages {
             </View>
 
             <View style={{ paddingLeft: 10 }}>
-              <LabelText>{`Name : ${this.props.user.name}`}</LabelText>
-              <LabelText>{`${this.props.user.roleuser}`}</LabelText>
+              <LabelText>{`${this.props.user ? this.props.user.name : ""}`}</LabelText>
+              <LabelText>{`${this.props.user ? this.props.user.position : ""}`}</LabelText>
             </View>
           </View>
+          {
+            // BUTTON ACTION USER
+          }
           <Buttons
-            style={{ width: "30%", borderRadius: 50, height: 40 }}
+            stylelabel={{
+              fontSize: 14,
+            }}
+            style={{
+              width: "30%",
+              borderRadius: 50,
+              height: 40,
+              backgroundColor: this.getbgColorUser(),
+            }}
             label={this.getTextButtonUser()}
+            onPress={this.onButtonPress.bind(this)}
           />
         </View>
       </View>

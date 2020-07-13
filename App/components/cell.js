@@ -4,9 +4,12 @@ import { PhotoProfil } from "./imagesManager";
 import { LabelText } from "./labelManager";
 import { TouchableHighlight } from "react-native";
 import colors from "../styles/colors";
-import { convertWidth } from "../config/global";
+import { convertWidth, addSpace } from "../config/global";
 
 export const CellHome = (props) => {
+  if (props.item.visitable == false) {
+    return null;
+  }
   return (
     <View
       style={{ paddingLeft: 10 }}
@@ -20,7 +23,7 @@ export const CellHome = (props) => {
           backgroundColor:
             props.item.isSelect == true ? colors.TAB_ACTIVE_COLOR : colors.COLOR_PRIMARY_1,
         }}>
-        <LabelText style={{ textAlign: "center", width: 100 }}>{props.item.name}</LabelText>
+        <LabelText style={{ textAlign: "left", paddingLeft: 10 }}>{props.item.name}</LabelText>
       </View>
     </View>
   );
@@ -33,6 +36,8 @@ export const CellHomePlace = (props) => {
           flexDirection: "row",
           alignItems: "center",
           borderBottomWidth: 1,
+          borderBottomColor: colors.COLOR_BUTTON_PERMISSION_ACTIVE,
+          borderTopWidth: 1,
           padding: 10,
           backgroundColor:
             props.item.isSelect == true ? colors.TAB_ACTIVE_COLOR : colors.COLOR_PRIMARY_1,
@@ -43,7 +48,7 @@ export const CellHomePlace = (props) => {
             height: convertWidth(10),
           }}
         />
-        <LabelText style={{ textAlign: "center", width: 100 }}>{props.item.name}</LabelText>
+        <LabelText style={{ textAlign: "left", paddingHorizontal: 5 }}>{props.item.name}</LabelText>
         <LabelText
           style={{
             textAlign: "center",
@@ -51,10 +56,10 @@ export const CellHomePlace = (props) => {
             paddingHorizontal: 5,
             fontSize: 14,
             borderRadius: 10,
-          }}>{`0 km`}</LabelText>
+          }}>{`${Math.ceil(props.item.range)} km`}</LabelText>
       </View>
       <FlatList
-        data={props.item.worker}
+        data={props.item.doctors}
         scrollEnabled={false}
         renderItem={({ item, index }) => {
           return (
@@ -65,6 +70,7 @@ export const CellHomePlace = (props) => {
           return "cell" + index;
         }}
       />
+      {addSpace(5)}
     </View>
   );
 };
