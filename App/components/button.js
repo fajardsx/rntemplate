@@ -16,7 +16,21 @@ export const Buttons = (props) => (
       props.onPress ? props.onPress() : Alert.alert(Constant.NAME_APPS, "No Event Click")
     }>
     <Text style={[AppStyle.buttonlabeldefault, props.stylelabel]}>
-      {props.label ? props.label : "Button Label"}
+      {props.label ? props.label : ""}
     </Text>
+  </TouchableOpacity>
+);
+export const ButtonsChild = (props) => (
+  <TouchableOpacity
+    disabled={props.disabled}
+    style={[
+      AppStyle.buttondefault,
+      props.style,
+      props.enableStick ? { position: "absolute", bottom: 0 } : null,
+    ]}
+    onPress={() =>
+      props.onPress ? props.onPress() : Alert.alert(Constant.NAME_APPS, "No Event Click")
+    }>
+    {props.children}
   </TouchableOpacity>
 );

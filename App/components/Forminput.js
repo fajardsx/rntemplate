@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { Text, View, TouchableOpacity, TextInput } from "react-native";
+import colors from "../styles/colors";
 
 export default class Forminput extends PureComponent {
   constructor(props) {
@@ -64,6 +65,11 @@ export default class Forminput extends PureComponent {
           style={[this.props.styleinput ? this.props.styleinput : null]}
           textAlignVertical={this.props.textAlignVertical ? this.props.textAlignVertical : "center"}
           placeholder={this.props.placeholder != null ? this.props.placeholder : this.props.title}
+          placeholderTextColor={
+            this.props.placeholderTextColor != null
+              ? this.props.placeholderTextColor
+              : colors.COLOR_TEXT_4
+          }
         />
       </View>
     );

@@ -10,6 +10,7 @@ const initialState = {
   User: null,
   UserLocation: null,
   VisitSchedule: null,
+  isLoading: false,
 };
 
 //REDUCER
@@ -19,6 +20,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, ServerID: action.value };
     case ACTION_TYPE.UPDATE_ENVI:
       return { ...state, Envi: action.value };
+    case ACTION_TYPE.SET_LOADING:
+      return { ...state, isLoading: action.value };
     case ACTION_TYPE.UPDATE_FIRST:
       return { ...state, FirstOpen: action.value };
     case ACTION_TYPE.UPDATE_TOKEN:

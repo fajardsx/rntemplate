@@ -4,7 +4,7 @@ import Constant from "../config/Constant";
 import { convertHeight, convertWidth } from "../config/global";
 
 export const LabelText = (props) => (
-  <Text style={[{ fontSize: 16, fontWeight: "normal" }, props.style]}>
+  <Text style={[{ fontSize: 14, fontWeight: "normal" }, props.style]}>
     {props.text || props.children}
   </Text>
 );

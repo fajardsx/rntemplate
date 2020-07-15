@@ -22,6 +22,7 @@ import TransitionCustomConfig from "./components/NaviTransitionConfig";
 import DetailCell from "./screen/screens/DetailCell";
 import AuthorizeUser from "./screen/screens/AuthorizeUser";
 import forgotpassword from "./screen/login/forgotpassword";
+import LoadingContainer from "./screen/container/LoadingContainer";
 
 //Login Stack
 const LoginStackNavigation = createStackNavigator(
@@ -189,13 +190,16 @@ class RootScreen extends Component {
   }
   render() {
     return (
-      <MainStackNavigator
-        uriPrefix={Constant.PREFIX}
-        style={{ flex: 1 }}
-        ref={(navigatorRef) => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <MainStackNavigator
+          uriPrefix={Constant.PREFIX}
+          style={{ flex: 1 }}
+          ref={(navigatorRef) => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+          }}
+        />
+        <LoadingContainer />
+      </View>
     );
   }
 }

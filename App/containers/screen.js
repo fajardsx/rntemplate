@@ -16,7 +16,11 @@ export const Container = (props) => (
       contentContainerStyle={AppStyle.container}>
       <SafeAreaView style={{ flex: 1 }}>{props.children}</SafeAreaView>
     </KeyboardAvoidingView> */}
-    <KeyboardAwareScrollView>{props.children}</KeyboardAwareScrollView>
+    {props.disableKeyboardAware == true && <View>{props.children}</View>}
+    {!props.disableKeyboardAware && (
+      <KeyboardAwareScrollView>{props.children}</KeyboardAwareScrollView>
+    )}
+
     <StatusBar
       hidden={props.statusbarHidden ? props.statusbarHidden : false}
       backgroundColor={colors.COLOR_STATUSBAR}

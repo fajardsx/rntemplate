@@ -22,15 +22,15 @@ class UserDashboard extends Pages {
     let ROLE = this.props.user ? this.props.user.currentRole : 1;
     switch (ROLE) {
       case Constant.ROLE_INLOGIN:
-        return "Start";
+        return "Start Your Day";
       case Constant.ROLE_INSELECTSCHEDULE:
-        return "Submit";
+        return "Set";
       case Constant.ROLE_ADDDOCTORAGAIN:
-        return "Cancel";
+        return "Set";
       case Constant.ROLE_READYSTARTSCHEDULE:
         return "Finish";
       case Constant.ROLE_FINISHTODAY:
-        return "End This Day";
+        return "End This Today";
       case Constant.ROLE_YESTERDAY:
         return "Today is End";
       default:
@@ -45,7 +45,7 @@ class UserDashboard extends Pages {
       case Constant.ROLE_INSELECTSCHEDULE:
         return colors.USERBUTTON_ACTIVE_COLOR;
       case Constant.ROLE_ADDDOCTORAGAIN:
-        return colors.USERBUTTON_CANCEL_ACTIVE_COLOR;
+        return colors.USERBUTTON_ACTIVE_COLOR;
       case Constant.ROLE_READYSTARTSCHEDULE:
         return colors.USERBUTTON_ACTIVE_COLOR;
       case Constant.ROLE_FINISHTODAY:
@@ -58,16 +58,20 @@ class UserDashboard extends Pages {
   }
   onButtonPress() {
     let ROLE = this.props.user ? this.props.user.currentRole : 1;
-    switch (ROLE) {
-      case Constant.ROLE_INLOGIN:
-        break;
-    }
+    this.props.callShow();
   }
   //
   render() {
     const { isConnect } = this.state;
     return (
-      <View style={{ width: convertWidth(100), justifyContent: "center", borderWidth: 1 }}>
+      <View
+        style={{
+          margin: 10,
+          width: convertWidth(95),
+          justifyContent: "center",
+          borderRadius: 5,
+          backgroundColor: colors.COLOR_PRIMARY_2,
+        }}>
         <View
           style={{
             flexDirection: "row",
@@ -79,9 +83,9 @@ class UserDashboard extends Pages {
             style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <View>
               <PhotoProfil
-                styles={{
-                  width: convertWidth(12),
-                  height: convertWidth(12),
+                style={{
+                  width: convertWidth(15),
+                  height: convertWidth(15),
                 }}
               />
               {
@@ -91,7 +95,7 @@ class UserDashboard extends Pages {
                 style={{
                   bottom: 0,
                   position: "absolute",
-                  width: 25,
+                  width: 20,
                   aspectRatio: 1,
                   borderRadius: 25,
                   backgroundColor: isConnect ? colors.IS_CONNECT : colors.IS_DISCONNECT,

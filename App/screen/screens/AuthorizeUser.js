@@ -34,6 +34,7 @@ class AuthorizeUser extends Component {
       this.props.navigation.navigate(ROUTE_NAME.Screen_FirstLogin);
     }
   }
+  //RESP API
   async onRequestSchedule() {
     const { user, visitSchedule } = this.props;
     //if (visitSchedule) return console.log(JSON.parse(visitSchedule));
@@ -41,7 +42,7 @@ class AuthorizeUser extends Component {
     let body = new FormData();
     body.append("user_id", user.id);
     const dataSchedule = await callAPI(Constant.P, RESTKEY.API.req_schdule, body);
-    //console.log("Authorize uSer dataSchedule=>", dataSchedule);
+    console.log("Authorize uSer dataSchedule=>", dataSchedule);
     if (dataSchedule.api_message == "success") {
       let schedule = {
         attend: dataSchedule.attend,
@@ -71,12 +72,18 @@ class AuthorizeUser extends Component {
     if (attend.out && attend.out.length > 3) {
       resultout = dateFns.differenceInCalendarDays(dateFns.parse(attend.out), new Date());
       console.log("is yesterday User attend out", resultout);
+    } else if (attend.out == null) {
+      resultout = null;
     }
 
     if (resultin < 0 && resultout < 0) {
+      startRole = Constant.ROLE_INLOGIN;
+    } else if (resultin < 0 && resultout == null) {
       startRole = Constant.ROLE_YESTERDAY;
     } else if (resultin == 0 && set_schedule.length > 0) {
       startRole = Constant.ROLE_READYSTARTSCHEDULE;
+    } else if (resultin == 0 && set_schedule.length == 0) {
+      startRole = Constant.ROLE_INSELECTSCHEDULE;
     }
     let tempUser = Object.assign({}, user);
     tempUser.currentRole = startRole;
@@ -100,17 +107,22 @@ class AuthorizeUser extends Component {
           latitude,
           longitude,
         };
-        //console.log("cordinate : ", newCoordinate);
+        console.log("AuthorizeUser.js => mycoordinate : ", newCoordinate);
         this.props.updateLocation(newCoordinate);
+        this.generateRange(dataSchedule, newCoordinate);
       },
-      (error) => showToast(error.message),
+      (error) => {
+        showToast(error.message);
+        this.generateRange(dataSchedule, mycoordinate);
+      },
       {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 100,
       }
     );
-
+  }
+  generateRange = (dataSchedule, mycoordinate) => {
     console.log("AuthorizeUser.js => mycoordinate", mycoordinate);
     //console.log("AuthorizeUser.js => dataSchedule", dataSchedule);
     // RANGE DATA
@@ -126,13 +138,26 @@ class AuthorizeUser extends Component {
         resDok.isSelect = false;
       });
     });
-    //console.log("AuthorizeUser.js => dataSchedule after", dataSchedule);
+    dataSchedule.set_schedule.map((res) => {
+      //console.log("hospital : ", res);
+      const res_cordinate = { latitude: res.lat, longitude: res.lng };
+      let resultRange = calcDistance(mycoordinate, res_cordinate);
+      //console.log("hospital : ", resultRange);
+      res.range = resultRange;
+      // res.isSelect = false;
+      // //addDoctor
+      // res.doctors.map((resDok) => {
+      //   resDok.isSelect = false;
+      // });
+    });
+    console.log("AuthorizeUser.js => dataSchedule after", dataSchedule);
     let sortRange = dataSchedule.visit_schedule.sort(targetSort(["range"]));
+    let sortRangeset_schedule = dataSchedule.set_schedule.sort(targetSort(["range"]));
     //console.log("AuthorizeUser.js => sortRange", sortRange);
     this.props.updateVisit(JSON.stringify(dataSchedule));
     //Start APPS
     this.props.navigation.navigate(ROUTE_NAME.Screen_Apps);
-  }
+  };
   //
   render() {
     return (

@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { Text, View, FlatList } from "react-native";
 import { CellHome, CellHomePlace } from "../../../components/cell";
 import NavigationServices from "../../../NavigationServices";
+import { stat } from "react-native-fs";
+import { connect } from "react-redux";
+import ACTION_TYPE from "../../../redux/actions/indexactions";
 
-export default class ListCell extends Component {
+class ListCell extends Component {
   constructor(props) {
     super(props);
 
@@ -16,54 +19,119 @@ export default class ListCell extends Component {
       data: this.props.data,
     });
   }
-
-  onselect = (i) => {
-    const { data } = this.state;
-    const datatemp = [...data];
-    console.log("Press ", i);
-    let getIndex = datatemp.filter((res) => {
-      return res.id == i.parentid;
-    });
-    console.log("parent found ", getIndex);
-    if (getIndex.length > 0) {
-      let selectWorker = getIndex[0].worker.find((res) => {
-        return res.id == i.id;
-      });
-      console.log("child found ", selectWorker);
+  //
+  static getDerivedStateFromProps(props, state) {
+    if (props.data != state.data) {
+      return {
+        data: props.data,
+      };
     }
-    // if (getIndex > -1) {
-    //   console.log("Found INdex ", getIndex);
-    //   datatemp[getIndex].isSelect = !datatemp[getIndex].isSelect;
-    //   //console.log("Found datatemp ", datatemp);
-    //   if (datatemp[getIndex].isSelect == true) {
-    //     //NavigationServices.navigate("ScreenDetail");
-    //   }
-    //   this.setState({ data: datatemp });
-    // }
+    return null;
+  }
+  //UPDATE SELECT PARENT
+  onSelect = (data, status) => {
+    //console.log("ListCell.js => onSelect() data ", data);
+    let tempData = [...this.state.data];
+    let posData = tempData.find((res) => {
+      return res.id == data.id;
+    });
+    if (posData) {
+      posData.isSelect = status;
+      posData["doctors"].map((child) => {
+        this.onSelectChild(child, status, tempData);
+      });
+    }
   };
-
+  //UPDATE SELECT CHILD
+  onSelectChild(data, status, dataParent) {
+    //console.log("ListCell.js => onSelectChild() data ", data);
+    //console.log("ListCell.js => onSelectChild() id ", this.state.data);
+    let tempData = dataParent ? dataParent : [...this.state.data];
+    data.locations.map((loc) => {
+      let getParent = tempData.find((res) => {
+        return res.id == loc;
+      });
+      if (getParent) {
+        //console.log("ListCell.js => onSelectChild() getParent ", getParent);
+        let child = getParent["doctors"].find((child) => {
+          return child.id == data.id;
+        });
+        if (child) {
+          // console.log("ListCell.js => onSelectChild() child ", child);
+          child.isSelect = status;
+        }
+      }
+    });
+    //Check Parent
+    tempData.map((par) => {
+      let isSelectCount = 0;
+      par["doctors"].map((childdata) => {
+        if (childdata.isSelect == true) {
+          isSelectCount += 1;
+        }
+      });
+      //RESULT CHILD
+      if (isSelectCount == par["doctors"].length) {
+        par.isSelect = true;
+      }
+      if (isSelectCount < par["doctors"].length) {
+        par.isSelect = false;
+      }
+    });
+    this.onUpdate(tempData);
+    //console.log("ListCell.js => onSelectChild() after tempData ", tempData);
+  }
+  //FOR UPDATE VISIT SCHEDULE
+  onUpdate(data) {
+    const { visitschedule } = this.props;
+    let datareduc = JSON.parse(visitschedule);
+    datareduc.visit_schedule = data;
+    //console.log("ListCell.js => onUpdate() after tempData ", datareduc.visit_schedule);
+    this.props.updateVisitSchedule(JSON.stringify(datareduc));
+  }
+  //
   render() {
     console.log("Rerender List Cell");
     return (
-      <View>
-        <FlatList
-          data={this.state.data}
-          extraData={this.state}
-          initialNumToRender={5}
-          maxToRenderPerBatch={1}
-          updateCellsBatchingPeriod={1000}
-          windowSize={2}
-          removeClippedSubviews={true}
-          // scrollEnabled={false}
-          renderItem={this.renderItems}
-          keyExtractor={(item, index) => {
-            return "cell" + index;
-          }}
-        />
-      </View>
+      <FlatList
+        data={this.state.data}
+        extraData={this.state}
+        initialNumToRender={5}
+        maxToRenderPerBatch={1}
+        updateCellsBatchingPeriod={1000}
+        windowSize={2}
+        removeClippedSubviews={true}
+        // scrollEnabled={false}
+        renderItem={this.renderItems}
+        keyExtractor={(item, index) => {
+          return "cell" + index;
+        }}
+      />
     );
   }
   renderItems = ({ item, index }) => (
-    <CellHomePlace item={item} onPress={this.onselect.bind(this)} />
+    <CellHomePlace
+      item={item}
+      user={this.props.user}
+      onPress={this.onSelect.bind(this)}
+      onPressChild={this.onSelectChild.bind(this)}
+      onPressNA={this.props.onOpenFeedBack}
+    />
   );
 }
+function mapStateToProps(state) {
+  return {
+    visitschedule: state.VisitSchedule,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateVisitSchedule: (data) =>
+      dispatch({
+        type: ACTION_TYPE.UPDATE_VISIT_SCHEDULE,
+        value: data,
+      }),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ListCell);

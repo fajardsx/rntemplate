@@ -27,9 +27,9 @@ class Constant {
   static G = "get";
   static PU = "put";
   //TOAST TYPE
-  static TYPE_WARNING = "warning";
-  static TYPE_SUCCESS = "success";
-  static TYPE_DANGER = "danger";
+  // static TYPE_WARNING = "warning";
+  // static TYPE_SUCCESS = "success";
+  // static TYPE_DANGER = "danger";
 
   static LOCATION_DEFAULT = {
     latitude: -6.2087634,
@@ -43,10 +43,16 @@ class Constant {
   };
 
   static WEB =
-    this.SERVER_ID === 0 ? "https://himalayafrontline.com/public/api" : "https://www.rhapsodie.co";
+    this.SERVER_ID === 0
+      ? "https://beta2.dotcomsolution.co.id/himalaya/public/api/"
+      : "https://himalayafrontline.com/public/api";
 
   // WILL REPLACE WITH RESLINK FROM API ENVIROTMENT
-  static RESTLINK = "https://himalayafrontline.com/public/api";
+  //static RESTLINK = "https://beta2.dotcomsolution.co.id/himalaya/public/api";
+  static RESTLINK =
+    this.SERVER_ID === 0
+      ? "https://beta2.dotcomsolution.co.id/himalaya/public/api"
+      : "https://himalayafrontline.com/public/api";
 
   static RESTPAYLINK =
     this.SERVER_ID === 0
@@ -138,6 +144,10 @@ class Constant {
 
     return getdata.content;
   }
+  // DATE ATTEND
+  static formatAttend = "YYYY-MM-DD HH:mm:ss";
+  // MINIMUM FEEDBACK CHARACTER
+  static maxCharFeedback = 6;
 }
 
 export default Constant;

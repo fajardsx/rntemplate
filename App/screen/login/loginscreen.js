@@ -119,6 +119,7 @@ class LoginScreen extends Component {
 
     this.setState({ isLoading: true });
     let login = await callAPI(Constant.P, RESTKEY.API.login_rsa, body);
+    this.setState({ isLoading: false });
     console.log("loginscreen => result  ", login);
     if (login.api_message == "success") {
       let dataUser = {
@@ -136,7 +137,7 @@ class LoginScreen extends Component {
       console.log("User ", dataUser);
       this.props.updateUser(dataUser); // SAVE USER DATA
       showToast(login.api_message, colors.TOAST_SUCCESS);
-      this.setState({ isLoading: false });
+
       if (NavigationServices.getNavigatorRef()) {
         NavigationServices.navigateAndReset(ROUTE_NAME.TAB_SCREEN);
       } else {

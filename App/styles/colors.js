@@ -7,11 +7,13 @@ class colors {
   //PRIMARY COLOR
   static COLOR_PRIMARY_1 = "#f8f9fa";
   static COLOR_PRIMARY_2 = "#FFFFFF";
-  static COLOR_PRIMARY_3 = "#FFFFFF";
+  static COLOR_PRIMARY_3 = "#228aca";
+  static COLOR_PRIMARY_4 = "#bfbfbf";
   //PRIMARY TXT COLOR
   static COLOR_TEXT_1 = "#000000";
   static COLOR_TEXT_2 = "#FFFFFF";
   static COLOR_TEXT_3 = "#228aca";
+  static COLOR_TEXT_4 = "#bfbfbf";
   //PRIMAEY BUTTON COLOR
   static COLOR_BUTTON_1 = "#42B2FE";
   static COLOR_BUTTON_LABEL_1 = "#FFFFFF";
@@ -37,6 +39,18 @@ class colors {
   static TOAST_WARNING = "#f2e602";
   static TOAST_DANGER = "#e31010";
   static TOAST_SUCCESS = "#0eeb49";
+  //MODAL
+  static CANCEL_COLOR = "#ffb703";
+  static SUBMIT_COLOR = "#0eeb49";
+  //CELL SELECTCOLOR
+  static IS_SELECT = "#228aca";
+  static IS_UNSELECT = "#bfbfbf";
+  //STATUS
+
+  static NOT_MEET = "#e31010";
+  static ENABLE_MEET = "#0eeb49";
+  static DISABLE_MEET = "#bfbfbf";
+  static ADD_COMMENT_MEET = "#228aca";
 }
 
 export default colors;

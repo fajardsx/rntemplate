@@ -27,6 +27,8 @@ import { checkMultiple, check, PERMISSIONS } from "react-native-permissions";
 import colors from "../styles/colors";
 import { ROUTE_NAME } from "../config/Keys";
 import NavigationServices from "../NavigationServices";
+import Geolocation from "@react-native-community/geolocation";
+import User from "../screen/components/User";
 
 export default class Global {
   static istablet = false;
@@ -353,7 +355,7 @@ export const validateYouTubeUrl = (youtubeUrl) => {
 //--------------------------------------------------------------------------------------------
 export function calcDistance(prevLatLng, newLatLng) {
   //const { prevLatLng } = this.state;
-  return haversine(prevLatLng, newLatLng, { unit: "km" }) || 0;
+  return haversine(prevLatLng, newLatLng, { unit: "km" }) || null;
 }
 //--------------------------------------------------------------------------------------------
 // TOAST
@@ -390,5 +392,16 @@ export const checkPermission = async () => {
   return respons;
 };
 //--------------------------------------------------------------------------------------------
-
+export const ReqRange = async (latlng) => {
+  let res_cordinate = {
+    latitude: latlng.lat,
+    longitude: latlng.lng,
+  };
+  let myCoordinate = User.getUserLocation();
+  if (myCoordinate != undefined) {
+    let range = calcDistance(myCoordinate, res_cordinate);
+    console.log("ReqRange()  range ", range);
+  }
+  return 0;
+};
 //--------------------------------------------------------------------------------------------

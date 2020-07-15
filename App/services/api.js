@@ -2,6 +2,8 @@ import axios from "axios";
 import { Platform, Alert } from "react-native";
 import callAPIUntrust from "./callApiUntrust";
 import Constant from "../config/Constant";
+import { showToast } from "../config/global";
+import colors from "../styles/colors";
 
 const baseUrl = Constant.RESTLINK;
 
@@ -42,9 +44,8 @@ export const callAPI = async (method, uri, params, additionalHeader) => {
       throw error.response.data;
     }
     // tslint:disable-next-line: no-console
-    Platform.OS == "android"
-      ? ToastAndroid.show(error.toString(), ToastAndroid.SHORT)
-      : Alert.alert("error", error);
+    showToast(error.toString(), colors.TOAST_DANGER);
+
     //console.error('error not defined', error)
 
     return null;
