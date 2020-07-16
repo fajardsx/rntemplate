@@ -57,40 +57,99 @@ export const CellHome = (props) => {
           {props.user.currentRole == Constant.ROLE_INSELECTSCHEDULE && addSpaceW(2)}
           <LabelText style={{ textAlign: "left", paddingLeft: 10 }}>{props.item.name}</LabelText>
         </View>
+        {props.item.schedule.length > 0 && props.item.schedule[0].results == null && (
+          <View style={{ flexDirection: "row", minWidth: "40%", alignItems: "center" }}>
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (
+              <Buttons
+                style={{
+                  width: convertWidth(30),
+                  height: 30,
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  backgroundColor: colors.COLOR_PRIMARY_1,
+                  alignItems: "center",
+                }}
+                label={"View Detail"}
+                stylelabel={{ color: colors.COLOR_TEXT_1, fontSize: 14 }}
+                //onPress={() => props.onPress(props.item, !props.item.isSelect)}
+              />
+            )}
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && addSpaceW(2)}
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (
+              <Buttons
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
 
-        <View style={{ flexDirection: "row", minWidth: "40%", alignItems: "center" }}>
-          {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (
-            <Buttons
-              style={{
-                width: convertWidth(30),
-                height: 30,
-                borderRadius: 20,
-                borderWidth: 1,
-                backgroundColor: colors.COLOR_PRIMARY_1,
-                alignItems: "center",
-              }}
-              label={"View Detail"}
-              stylelabel={{ color: colors.COLOR_TEXT_1, fontSize: 14 }}
-              //onPress={() => props.onPress(props.item, !props.item.isSelect)}
-            />
-          )}
-          {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && addSpaceW(2)}
-          {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (
-            <Buttons
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 30,
+                  backgroundColor: colors.NOT_MEET,
+                  alignItems: "center",
+                }}
+                label={"N/A"}
+                stylelabel={{ color: colors.COLOR_TEXT_2, fontSize: 12 }}
+                onPress={() => props.onPressNA(props.item)}
+              />
+            )}
+          </View>
+        )}
+        {props.item.schedule.length > 0 && props.item.schedule[0].results && (
+          <View
+            style={{
+              flexDirection: "row",
+              minWidth: "40%",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}>
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE &&
+              props.item.schedule[0].results.feedback_sales == null && (
+                <Buttons
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 30,
 
-                backgroundColor: colors.NOT_MEET,
-                alignItems: "center",
-              }}
-              label={"N/A"}
-              stylelabel={{ color: colors.COLOR_TEXT_2, fontSize: 12 }}
-              onPress={() => props.onPressNA(props.item)}
-            />
-          )}
-        </View>
+                    backgroundColor: colors.ADD_COMMENT_MEET,
+                    alignItems: "center",
+                  }}
+                  label={"N/A"}
+                  stylelabel={{ color: colors.COLOR_TEXT_2, fontSize: 12 }}
+                  onPress={() => props.onPressNA(props.item)}
+                />
+              )}
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && addSpaceW(2)}
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (
+              <Buttons
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
+
+                  backgroundColor: colors.NOT_MEET,
+                  alignItems: "center",
+                }}
+                label={"N/A"}
+                stylelabel={{ color: colors.COLOR_TEXT_2, fontSize: 12 }}
+                onPress={() => props.onPressNA(props.item)}
+              />
+            )}
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && addSpaceW(2)}
+            {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (
+              <Buttons
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
+
+                  backgroundColor: colors.DISABLE_MEET,
+                  alignItems: "center",
+                }}
+                label={"N/A"}
+                stylelabel={{ color: colors.COLOR_TEXT_2, fontSize: 12 }}
+                onPress={() => props.onPressNA(props.item)}
+              />
+            )}
+          </View>
+        )}
       </View>
     </View>
   );

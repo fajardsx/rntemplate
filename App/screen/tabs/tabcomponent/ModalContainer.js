@@ -297,7 +297,7 @@ class ModalContainer extends Component {
   //
   async onSubmitFeedbackModal() {
     const { user } = this.props;
-    const { tempDataSelect } = this.state;
+    const { tempDataChild } = this.state;
     Keyboard.dismiss();
     if (this.state.feedbacktxt.length < Constant.maxCharFeedback) {
       return Alert.alert(
@@ -306,9 +306,12 @@ class ModalContainer extends Component {
       );
       //showToast(`Minimum feedback ${Constant.maxCharFeedback} character`, colors.TOAST_WARNING);
     }
-    let feedbackForm = tempDataSelect; //<= data dokter for fill feedback body
+
+    this.onCloseModal();
+    let feedbackForm = tempDataChild; //<= data dokter for fill feedback body
     let startDate = dateFns.format(Date.now(), "YYYY-MM-DD", { locale: idLocale });
     let feedbackFormStatus = 0; //<= if not meet
+    console.log("ModalContainer.js => feedbackForm ", feedbackForm);
     let body = new FormData();
     body.append("status", feedbackFormStatus);
     body.append("cms_users_id", user.id);
@@ -316,7 +319,7 @@ class ModalContainer extends Component {
     body.append("doctors_id", feedbackForm.pivot.doctors_id);
     body.append("locations_id", feedbackForm.pivot.locations_id);
     body.append("signature", false);
-    body.append("feedback", false);
+    body.append("feedback", true);
     body.append("feedback_sales", this.state.feedbacktxt);
     body.append("e_detailings_name", feedbackForm.speciality_name);
     body.append("json_result", null);
@@ -327,11 +330,34 @@ class ModalContainer extends Component {
     this.props.setLoading(false);
     if (resultSubmitfeedback) {
       if (resultSubmitfeedback.api_message == "success") {
+        // Process update data
+        //resultSubmitfeedback.data
+        this.processResult(feedbackForm.id, resultSubmitfeedback.data);
         showToast(resultSubmitfeedback.api_message, colors.TOAST_SUCCESS);
       } else {
+        this.processResult(feedbackForm.id, resultSubmitfeedback.data);
         showToast(resultSubmitfeedback.api_message, colors.TOAST_WARNING);
       }
     }
+  }
+  //
+  async processResult(dokterid, dataresult) {
+    let visitschedule = JSON.parse(this.props.visitschedule);
+    visitschedule.visit_schedule.map((res) => {
+      res["doctors"].map((doc) => {
+        if (doc.id == dokterid) {
+          console.log("doc ", doc);
+          doc.schedule = [dataresult];
+        }
+      });
+    });
+    console.log("ModalContainer.js => processResult visitschedule ", visitschedule);
+    this.props.updateVisit(JSON.stringify(visitschedule));
+    this.delay = setTimeout(() => {
+      //this.onUpdateRoleUser(Constant.ROLE_READYSTARTSCHEDULE);
+      this.props.initData();
+      clearTimeout(this.delay);
+    }, 1000);
   }
   //
   render() {
