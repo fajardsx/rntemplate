@@ -45,11 +45,12 @@ class HomeScreen extends Component {
   onInitSchedule() {
     const { user, visitschedule } = this.props;
     console.log("homescreen.js => onInitSchedule() Role ", this.props.user.currentRole);
-    let data = JSON.parse(visitschedule);
-
-    data = JSON.parse(visitschedule).visit_schedule;
-
-    //console.log("homescreen.js => onInitSchedule() Schedule data ", data);
+    let data = [...JSON.parse(visitschedule).visit_schedule];
+    console.log(
+      "homescreen.js => onInitSchedule() Schedule visit_schedule ",
+      JSON.parse(visitschedule).visit_schedule
+    );
+    console.log("homescreen.js => onInitSchedule() Schedule data ", data);
     // SET HOME DATA LIST
     if (user.currentRole == Constant.ROLE_READYSTARTSCHEDULE) {
       let tempList = data.filter((value, index) => {
@@ -131,25 +132,28 @@ class HomeScreen extends Component {
               justifyContent: "space-between",
             }}>
             <LabelText style={{ fontSize: 21 }}>{formateDate(new Date(), "MMMM YYYY")}</LabelText>
-            <Buttons
-              style={{
-                width:
-                  this.props.user.currentRole == Constant.ROLE_ADDDOCTORAGAIN
-                    ? convertWidth(20)
-                    : convertWidth(8),
-                height: convertWidth(8),
-                borderRadius: 30,
-                backgroundColor:
-                  this.props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE
-                    ? colors.USERBUTTON_ACTIVE_COLOR
-                    : colors.USERBUTTON_CANCEL_ACTIVE_COLOR,
-              }}
-              stylelabel={{
-                fontSize: 14,
-              }}
-              label={this.props.user.currentRole == Constant.ROLE_ADDDOCTORAGAIN ? "Cancel" : "+"}
-              onPress={this.onAddNewPlan.bind(this)}
-            />
+            {(this.props.user.currentRole == Constant.ROLE_ADDDOCTORAGAIN ||
+              this.props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE) && (
+              <Buttons
+                style={{
+                  width:
+                    this.props.user.currentRole == Constant.ROLE_ADDDOCTORAGAIN
+                      ? convertWidth(20)
+                      : convertWidth(8),
+                  height: convertWidth(8),
+                  borderRadius: 30,
+                  backgroundColor:
+                    this.props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE
+                      ? colors.USERBUTTON_ACTIVE_COLOR
+                      : colors.USERBUTTON_CANCEL_ACTIVE_COLOR,
+                }}
+                stylelabel={{
+                  fontSize: 14,
+                }}
+                label={this.props.user.currentRole == Constant.ROLE_ADDDOCTORAGAIN ? "Cancel" : "+"}
+                onPress={this.onAddNewPlan.bind(this)}
+              />
+            )}
           </View>
         }
 
@@ -186,6 +190,7 @@ function mapStateToProps(state) {
     token: state.Token,
     user: state.User,
     visitschedule: state.VisitSchedule,
+    showvisitschedule: state.ShowDataVisitSchedule,
   };
 }
 
@@ -199,6 +204,11 @@ function mapDispatchToProps(dispatch) {
     updateVisitSchedule: (data) =>
       dispatch({
         type: ACTION_TYPE.UPDATE_VISIT_SCHEDULE,
+        value: data,
+      }),
+    updateShowVisitSchedule: (data) =>
+      dispatch({
+        type: ACTION_TYPE.UPDATE_SHOW_VISIT_SCHEDULE,
         value: data,
       }),
     setLoading: (data) =>

@@ -12,6 +12,7 @@ class ListCell extends Component {
 
     this.state = {
       data: [],
+      list: this.List,
     };
   }
   componentDidMount() {
@@ -22,6 +23,9 @@ class ListCell extends Component {
   //
   static getDerivedStateFromProps(props, state) {
     if (props.data != state.data) {
+      if (state.list) {
+        state.list.scrollToIndex(0);
+      }
       return {
         data: props.data,
       };
@@ -85,20 +89,24 @@ class ListCell extends Component {
   onUpdate(data) {
     const { visitschedule } = this.props;
     let datareduc = JSON.parse(visitschedule);
+    console.log("ListCell.js => onUpdate() data ", data);
+    console.log("ListCell.js => onUpdate() datareduc.visit_schedule ", datareduc.visit_schedule);
     datareduc.visit_schedule = data;
-    //console.log("ListCell.js => onUpdate() after tempData ", datareduc.visit_schedule);
-    this.props.updateVisitSchedule(JSON.stringify(datareduc));
+    console.log("ListCell.js => onUpdate() after tempData ", datareduc.visit_schedule);
+    //this.props.updateVisitSchedule(JSON.stringify(datareduc));
+    this.props.updateShowVisitSchedule(JSON.stringify(data));
   }
   //
   render() {
     console.log("Rerender List Cell");
     return (
       <FlatList
+        ref={(res) => (this.List = res)}
         data={this.state.data}
         extraData={this.state}
         initialNumToRender={5}
-        maxToRenderPerBatch={1}
-        updateCellsBatchingPeriod={1000}
+        maxToRenderPerBatch={2}
+        //updateCellsBatchingPeriod={1000}
         windowSize={2}
         removeClippedSubviews={true}
         // scrollEnabled={false}
@@ -122,6 +130,7 @@ class ListCell extends Component {
 function mapStateToProps(state) {
   return {
     visitschedule: state.VisitSchedule,
+    showvisitschedule: state.ShowDataVisitSchedule,
   };
 }
 
@@ -130,6 +139,11 @@ function mapDispatchToProps(dispatch) {
     updateVisitSchedule: (data) =>
       dispatch({
         type: ACTION_TYPE.UPDATE_VISIT_SCHEDULE,
+        value: data,
+      }),
+    updateShowVisitSchedule: (data) =>
+      dispatch({
+        type: ACTION_TYPE.UPDATE_SHOW_VISIT_SCHEDULE,
         value: data,
       }),
   };

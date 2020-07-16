@@ -134,9 +134,19 @@ class AuthorizeUser extends Component {
       res.range = resultRange;
       res.isSelect = false;
       //addDoctor
+      let countSelect = 0;
       res.doctors.map((resDok) => {
-        resDok.isSelect = false;
+        if (resDok.schedule && resDok.schedule.length > 0) {
+          resDok.isSelect = true;
+          countSelect += 1;
+        } else {
+          resDok.isSelect = false;
+        }
       });
+      //Set Select
+      if (countSelect == res.doctors.length) {
+        res.isSelect = true;
+      }
     });
     dataSchedule.set_schedule.map((res) => {
       //console.log("hospital : ", res);

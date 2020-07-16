@@ -101,11 +101,13 @@ class ModalContainer extends Component {
   }
   generateList() {
     //CHECK isSelect is True
-    let dataVisitSchedule = JSON.parse(this.props.visitschedule);
+    let dataVisitSchedule = JSON.parse(this.props.showvisitschedule);
     let idDocter = [];
-    let visitschedule = dataVisitSchedule.visit_schedule.filter((parents, index) => {
+    let visitschedule = dataVisitSchedule.filter((parents, index) => {
       let result = parents["doctors"].filter((child) => {
-        return child.isSelect == true;
+        if (child.isSelect == true && child.schedule && child.schedule.length == 0) {
+          return child;
+        }
       });
       if (result.length > 0) {
         //console.log("ModalContainer.js => generateList() idDocter before", result);
@@ -169,6 +171,7 @@ class ModalContainer extends Component {
       }
     }
   };
+  //
   SubmitAttendExpired = async () => {
     const body = new FormData();
     let dateYesterday = dateFns.addDays(new Date(), -1);
@@ -224,8 +227,7 @@ class ModalContainer extends Component {
     this.props.setLoading(false);
     if (resultSetSchedule) {
       if (resultSetSchedule.api_message == "success") {
-        this.onUpdateRoleUser(Constant.ROLE_READYSTARTSCHEDULE);
-        //this.props.initData();
+        this.requestNewList(resultSetSchedule.set_schedule);
         showToast(resultSetSchedule.api_message, colors.TOAST_SUCCESS);
       } else {
         showToast(resultSetSchedule.api_message, colors.TOAST_WARNING);
@@ -235,6 +237,62 @@ class ModalContainer extends Component {
   removeDuplicate(data) {
     let uniq = {};
     return data.filter((obj) => !uniq[obj.id] && (uniq[obj.id] = true));
+  }
+  //
+  async requestNewList(updateVisit) {
+    //
+    let insertSchedule = {
+      cms_users_id: 273,
+      created_at: "2020-07-16 11:45:08",
+      doctors_id: 1317,
+      id: 55428,
+      results: null,
+      schedule_date: "2020-07-16",
+      updated_at: "2020-07-16 11:45:08",
+    };
+
+    let listDoctor = [];
+    updateVisit.map((res) => {
+      listDoctor = listDoctor.concat(listDoctor, res["doctors"]);
+    });
+    //console.log("ModalContainer.js => requestNewList() visitSchedule ", visitSchedule);
+    listDoctor = this.removeDuplicate(listDoctor);
+    console.log("ModalContainer.js => requestNewList() getDoctor ", listDoctor);
+    //UPDATE LOCAL DATA
+    let visitSchedule = JSON.parse(this.props.visitschedule);
+    console.log("ModalContainer.js => requestNewList() visitSchedule ", visitSchedule);
+    await visitSchedule.visit_schedule.map((res) => {
+      res["doctors"].map((resdoc) => {
+        //console.log("ModalContainer.js => requestNewList() resdoc  ", resdoc);
+        //cek if available in list update doctor
+
+        let found = listDoctor.find((updateres) => {
+          return updateres.id == resdoc.id;
+        });
+        if (found) {
+          console.log("ModalContainer.js => requestNewList() found ", found);
+          if (resdoc.schedule.length == 0) {
+            let insertSchedule = {
+              cms_users_id: null,
+              created_at: dateFns.format(new Date(), "YYYY-MM-DD HH:mm:ss"),
+              doctors_id: found.id,
+              id: null,
+              results: null,
+              schedule_date: dateFns.format(new Date(), "YYYY-MM-DD"),
+              updated_at: dateFns.format(new Date(), "YYYY-MM-DD HH:mm:ss"),
+            };
+            resdoc.schedule.push(insertSchedule);
+          }
+        }
+      });
+    });
+    this.props.updateVisit(JSON.stringify(visitSchedule));
+    this.onUpdateRoleUser(Constant.ROLE_READYSTARTSCHEDULE);
+    this.delay = setTimeout(() => {
+      //this.onUpdateRoleUser(Constant.ROLE_READYSTARTSCHEDULE);
+      this.props.initData();
+      clearTimeout(this.delay);
+    }, 1000);
   }
   //
   async onSubmitFeedbackModal() {
@@ -303,6 +361,7 @@ function mapStateToProps(state) {
   return {
     user: state.User,
     visitschedule: state.VisitSchedule,
+    showvisitschedule: state.ShowDataVisitSchedule,
   };
 }
 
@@ -311,6 +370,16 @@ function mapDispatchToProps(dispatch) {
     updateUser: (data) =>
       dispatch({
         type: ACTION_TYPE.UPDATE_USER,
+        value: data,
+      }),
+    updateVisit: (data) =>
+      dispatch({
+        type: ACTION_TYPE.UPDATE_VISIT_SCHEDULE,
+        value: data,
+      }),
+    updateLocation: (data) =>
+      dispatch({
+        type: ACTION_TYPE.UPDATE_USERLOCATION,
         value: data,
       }),
     setLoading: (data) =>

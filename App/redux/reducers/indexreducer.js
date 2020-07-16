@@ -10,6 +10,7 @@ const initialState = {
   User: null,
   UserLocation: null,
   VisitSchedule: null,
+  ShowDataVisitSchedule: null,
   isLoading: false,
 };
 
@@ -31,7 +32,10 @@ const reducer = (state = initialState, action) => {
     case ACTION_TYPE.UPDATE_USERLOCATION:
       return { ...state, UserLocation: action.value };
     case ACTION_TYPE.UPDATE_VISIT_SCHEDULE:
+      console.log("UPDATE VISIT SCHEDULE");
       return { ...state, VisitSchedule: action.value };
+    case ACTION_TYPE.UPDATE_SHOW_VISIT_SCHEDULE:
+      return { ...state, ShowDataVisitSchedule: action.value };
   }
   return state;
 };

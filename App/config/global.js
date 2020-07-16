@@ -405,3 +405,26 @@ export const ReqRange = async (latlng) => {
   return 0;
 };
 //--------------------------------------------------------------------------------------------
+export const generateRangeVisitSchedule = async (dataSchedule, mycoordinate, oncomplete) => {
+  dataSchedule.visit_schedule.map((res) => {
+    const res_cordinate = { latitude: res.lat, longitude: res.lng };
+    let resultRange = calcDistance(mycoordinate, res_cordinate);
+    res.range = resultRange;
+    res.isSelect = false;
+    //addDoctor
+    res.doctors.map((resDok) => {
+      resDok.isSelect = false;
+    });
+  });
+  dataSchedule.set_schedule.map((res) => {
+    const res_cordinate = { latitude: res.lat, longitude: res.lng };
+    let resultRange = calcDistance(mycoordinate, res_cordinate);
+    res.range = resultRange;
+  });
+  console.log("Global.js => generateRangeVisitSchedule() dataSchedule after", dataSchedule);
+  let sortRange = dataSchedule.visit_schedule.sort(targetSort(["range"]));
+  let sortRangeset_schedule = dataSchedule.set_schedule.sort(targetSort(["range"]));
+  //console.log("AuthorizeUser.js => sortRange", sortRange);
+  oncomplete(JSON.stringify(dataSchedule));
+};
+//--------------------------------------------------------------------------------------------
