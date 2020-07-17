@@ -57,6 +57,12 @@ export const CellHome = (props) => {
           {props.user.currentRole == Constant.ROLE_INSELECTSCHEDULE && addSpaceW(2)}
           <LabelText style={{ textAlign: "left", paddingLeft: 10 }}>{props.item.name}</LabelText>
         </View>
+        {
+          //** RIGHT NAVIGATOR */
+        }
+        {props.user.currentRole == Constant.ROLE_INLOGIN && (
+          <View style={{ flexDirection: "row", width: "40%", alignItems: "center" }} />
+        )}
         {props.item.schedule.length > 0 && props.item.schedule[0].results == null && (
           <View style={{ flexDirection: "row", minWidth: "40%", alignItems: "center" }}>
             {props.user.currentRole == Constant.ROLE_READYSTARTSCHEDULE && (

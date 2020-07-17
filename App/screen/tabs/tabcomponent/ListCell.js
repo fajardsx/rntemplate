@@ -13,6 +13,7 @@ class ListCell extends Component {
     this.state = {
       data: [],
       list: this.List,
+      letGroup: this.generateGroup.bind(this),
     };
   }
   componentDidMount() {
@@ -32,6 +33,8 @@ class ListCell extends Component {
     }
     return null;
   }
+  //PROCESS GROUP BY RANGE
+  generateGroup(data) {}
   //UPDATE SELECT PARENT
   onSelect = (data, status) => {
     //console.log("ListCell.js => onSelect() data ", data);

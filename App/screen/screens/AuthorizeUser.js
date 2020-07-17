@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import PropTypes from "prop-types";
-import Geolocation from "@react-native-community/geolocation";
+import Geolocation from "react-native-geolocation-service";
 import dateFns from "date-fns";
 import { connect } from "react-redux";
 import { Container } from "../../containers/screen";
@@ -13,6 +13,7 @@ import {
   showToast,
   calcDistance,
   targetSort,
+  reqActivateGps,
 } from "../../config/global";
 import colors from "../../styles/colors";
 import callAPI from "../../services/api";
@@ -23,7 +24,9 @@ class AuthorizeUser extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      tempSchedule: null,
+    };
   }
 
   componentDidMount() {
@@ -90,6 +93,31 @@ class AuthorizeUser extends Component {
     this.props.updateUser(tempUser);
     console.log("startRole", startRole);
   }
+  // REQUEST LOCATION AGAIN
+  async GetLocation(schedule) {
+    //showToast("Your GPS Not active");
+
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newCoordinate = {
+          latitude,
+          longitude,
+        };
+        console.log("cordinate : ", newCoordinate);
+        this.props.updateLocation(newCoordinate);
+      },
+      (error) => {
+        console.log("cordinate : ", error);
+        showToast(error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 100,
+      }
+    );
+  }
   // GENERATE SCHEDULE
   async processSchedule(schedule) {
     if (schedule) this.props.updateVisit(JSON.stringify(schedule));
@@ -100,6 +128,9 @@ class AuthorizeUser extends Component {
     this.checkAttendUser(dataSchedule.attend, dataSchedule.set_schedule);
     //USER LOCATION
     let mycoordinate = this.props.userlocation;
+
+    if (mycoordinate == null) return reqActivateGps(this.GetLocation.bind(this, schedule));
+
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -126,6 +157,7 @@ class AuthorizeUser extends Component {
     console.log("AuthorizeUser.js => mycoordinate", mycoordinate);
     //console.log("AuthorizeUser.js => dataSchedule", dataSchedule);
     // RANGE DATA
+
     dataSchedule.visit_schedule.map((res) => {
       //console.log("hospital : ", res);
       const res_cordinate = { latitude: res.lat, longitude: res.lng };

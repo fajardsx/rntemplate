@@ -8,8 +8,8 @@ import {
   BackHandler,
   Keyboard,
 } from "react-native";
-import { request, PERMISSIONS } from "react-native-permissions";
-import Geolocation from "@react-native-community/geolocation";
+import { request, PERMISSIONS, requestMultiple } from "react-native-permissions";
+import Geolocation from "react-native-geolocation-service";
 import { Container } from "../../containers/screen";
 import { AppStyle } from "../../styles/styles";
 import Constant from "../../config/Constant";
@@ -24,6 +24,7 @@ import {
   showToast,
   validateEmail,
   loadingScreen,
+  reqActivateGps,
 } from "./../../config/global";
 import { Buttons } from "./../../components/button";
 import colors from "./../../styles/colors";
@@ -59,6 +60,10 @@ class LoginScreen extends Component {
     //CHECK PERMISSION
     const permission = await checkPermission();
     console.log("LoginScreen permission ", permission);
+    if (permission.location == "granted") {
+      //this.onRequestGPS();
+      reqActivateGps(this.onRequestGPS.bind(this));
+    }
     this.setState({
       permission,
     });
@@ -70,9 +75,12 @@ class LoginScreen extends Component {
     });
   }
   onReqPermissionLocation() {
-    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((response) => {
-      console.log(response);
-      this.onRequestGPS();
+    requestMultiple([
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+    ]).then((response) => {
+      console.log("onReqPermissionLocation", response);
+      reqActivateGps(this.onRequestGPS.bind(this));
       this.onCheckPermission();
     });
   }
@@ -87,7 +95,10 @@ class LoginScreen extends Component {
         console.log("cordinate : ", newCoordinate);
         this.props.updateLocation(newCoordinate);
       },
-      (error) => showToast(error.message),
+      (error) => {
+        console.log("cordinate error : ", error);
+        showToast(error.message);
+      },
       {
         enableHighAccuracy: true,
         timeout: 20000,
